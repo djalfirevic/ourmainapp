@@ -15,6 +15,15 @@ use App\Http\Controllers\UserController;
 |
 */
 
+Route::get('/admins-only', function() {
+    // if (Gate::allows('visitAdminPages')) {
+    //     return 'Only admins should be able to see this page.';
+    // }
+    // return 'You cannot view this page.';
+
+    return 'Only admins should be able to see this page.';
+})->middleware('can:visitAdminPages');
+
 // User related routes
 Route::get('/', [UserController::class, "showCorrectHomepage"])->name('login');
 Route::post('/register', [UserController::class, 'register'])->middleware('guest');
