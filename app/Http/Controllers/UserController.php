@@ -8,6 +8,15 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function storeAvatar(Request $request) {
+        $request->file('avatar')->store('public/avatars');
+        return view('avatar-form');
+    }
+
+    public function showAvatarForm() {
+        return view('avatar-form');
+    }
+
     public function profile(User $user) {
         $posts = $user->posts()->latest()->get();
         return view('profile-posts', ['username' => $user->username, 'posts' => $posts, 'postCount' => $user->posts()->count()]);
