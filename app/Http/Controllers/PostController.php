@@ -18,8 +18,8 @@ class PostController extends Controller
         $incomingFields['body'] = strip_tags($incomingFields['body']);
 
         $post->update($incomingFields);
-        return back()->with('success', 'Post successfully updated.');
 
+        return back()->with('success', 'Post successfully updated.');
     }
 
     public function showEditForm(Post $post) {
@@ -28,7 +28,7 @@ class PostController extends Controller
 
     public function delete(Post $post) {
         $post->delete();
-        return redirect("/profile/" . auth()->user()->username)->with('success', 'Post successfully deleted.');
+        return redirect('/profile/' . auth()->user()->username)->with('success', 'Post successfully deleted.');
     }
 
     public function viewSinglePost(Post $post) {

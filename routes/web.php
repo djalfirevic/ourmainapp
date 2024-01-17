@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,21 +17,20 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/admins-only', function() {
-    // if (Gate::allows('visitAdminPages')) {
-    //     return 'Only admins should be able to see this page.';
-    // }
-    // return 'You cannot view this page.';
-
-    return 'Only admins should be able to see this page.';
+  return 'Only admins should be able to see this page.';
 })->middleware('can:visitAdminPages');
 
 // User related routes
 Route::get('/', [UserController::class, "showCorrectHomepage"])->name('login');
 Route::post('/register', [UserController::class, 'register'])->middleware('guest');
 Route::post('/login', [UserController::class, 'login'])->middleware('guest');
-Route::get('/logout', [UserController::class, 'logout'])->middleware('mustBeLoggedIn');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('mustBeLoggedIn');
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn');
 Route::post('/manage-avatar', [UserController::class, 'storeAvatar'])->middleware('mustBeLoggedIn');
+
+// Follow related routes
+Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])->middleware('mustBeLoggedIn');
+Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])->middleware('mustBeLoggedIn');
 
 // Blog post related routes
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
@@ -41,4 +41,4 @@ Route::get('/post/{post}/edit', [PostController::class, 'showEditForm'])->middle
 Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middleware('can:update,post');
 
 // Profile related routes
-Route::get('/profile/{user:username}', [UserController::class, 'profile'])->middleware('mustBeLoggedIn');
+Route::get('/profile/{user:username}', [UserController::class, 'profile']);
